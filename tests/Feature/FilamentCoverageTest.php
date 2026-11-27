@@ -13,14 +13,16 @@ use Liberu\Accounting\ReimbursementsFilament\Resources\ReimbursementLiabilityRes
 
 it('registers and configures accounting-reimbursements-filament filament resources', function (): void {
     $provider = $this->app->register(ReimbursementsFilamentServiceProvider::class, force: true);
-    if (method_exists($provider, 'boot')) { $provider->boot(); }
+    if (method_exists($provider, 'boot')) {
+        $provider->boot();
+    }
     expect($provider)->toBeInstanceOf(ReimbursementsFilamentServiceProvider::class);
     $plugin = ReimbursementsFilamentPlugin::make();
     $panel = Panel::make()->id('test-accounting-reimbursements-filament');
     $plugin->register($panel);
     $plugin->boot($panel);
     expect($plugin->getId())->toBeString()->not->toBeEmpty();
-    $host = new ListReimbursementLiabilities;
+    $host = new ListReimbursementLiabilities();
     expect(ReimbursementLiabilityResource::getPages())->toBeArray();
     expect(ReimbursementLiabilityResource::getEloquentQuery())->toBeInstanceOf(Builder::class);
     expect(ReimbursementLiabilityResource::form(Schema::make($host)))->toBeInstanceOf(Schema::class);
